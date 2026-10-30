@@ -1,0 +1,46 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "体检笔记：当前文件（自动找手册）",
+      "type": "process",
+      "command": "D:\\Python312\\python.exe",
+      "args": [
+        "G:\\DSH\\review_note.py",
+        "${file}",
+        "-a",
+        "-o",
+        "G:\\DSH\\reports\\${fileBasenameNoExtension}.txt"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true },
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "体检笔记：当前文件（只查格式）",
+      "type": "process",
+      "command": "D:\\Python312\\python.exe",
+      "args": [
+        "G:\\DSH\\review_note.py",
+        "${file}",
+        "-o",
+        "G:\\DSH\\reports\\${fileBasenameNoExtension}.txt"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "打开最近一次体检报告",
+      "type": "process",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "start",
+        "",
+        "G:\\DSH\\reports\\${fileBasenameNoExtension}.txt"
+      ],
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    }
+  ]
+}

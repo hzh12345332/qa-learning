@@ -1,0 +1,14 @@
+# ---- 脚本运行输出（临时结果，不进仓库） ----
+*.out.txt
+
+# ---- 编辑器个人设置（tasks.json 要共享，单独放行） ----
+.vscode/*
+!.vscode/tasks.json
+
+# ---- 数据库导出：那是数据，不是代码 ----
+*.csv
+*.xlsx
+
+# ---- 系统生成的文件 ----
+Thumbs.db
+desktop.ini

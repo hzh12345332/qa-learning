@@ -43,6 +43,17 @@
 > 11/02–11/05 是 Day 12–14（SQL 多表、50 题、环境文档），属于 SQL 收尾，已经在 `week02/` 里了。
 > 硬按日期切会让 `week02/day12` 和 `week03/day12` 打架 —— **目录跟内容走，日程表跟日期走，两者用上表对齐**。
 
+## 文件命名约定
+
+| 类型 | 命名 | 例子 | 为什么 |
+| --- | --- | --- | --- |
+| 每日笔记 | `NN-主题.md` | `01-SQL多表与测试查询.md` | 一天一个文件，`NN` 方便排序 |
+| 检查脚本 | `check-<查什么>.sql` | `check-missing-items.sql` | **`check-` 前缀让 `check-*.sql` 通配符可用**，一命令跑全部 |
+| 脚本输出 | `<脚本名>.out.txt` | `check-missing-items.out.txt` | `.gitignore` 里 `*.out.txt` 自动兜住 |
+| 目录 | `weekNN/`，按主题不按日期 | `week03/` = HTTP+接口 | 日期会跑偏，主题不会 |
+
+> 脚本输出**一律** `<脚本名>.out.txt` —— 别用 `out-status.txt`、`结果.txt` 这种随手名。
+
 ## 每个任务结束的固定动作
 
 ```bash
@@ -63,9 +74,10 @@ git status -sb
 
 | type | 用在哪 |
 |---|---|
-| `docs:` | 学习笔记、SQL 文件、README |
-| `feat:` | 能跑的脚本、测试代码、框架代码 |
-| `chore:` | 工具配置（`.vscode/`、`.gitignore`） |
+| `docs:` | 学习笔记、README |
+| `test:` | 检查脚本、用例、测试数据（`sql/`、以后的 pytest 文件） |
+| `feat:` | 功能代码、框架代码（项目 1 / 项目 2） |
+| `chore:` | 工具配置（`.vscode/`、`.gitignore`、`PLAN.md`） |
 
 ## 当前进度
 

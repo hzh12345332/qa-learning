@@ -30,6 +30,16 @@
 | Q005 | 无状态的缺点是什么 | 不是"会被抓"，是"没法止血" | day16 §3.4 | 🔁 |
 | Q006 | `-D` 会改变请求方法吗 | 不会，它只打印响应头 | day16 §1.3 | ✅ |
 | Q007 | 状态码 200 能证明业务成功吗 | 不能，只证明服务器回话了 | day15 §Q5 | ✅ |
+| Q008 | httpbin 的 /bearer 为什么任意 token 都 200 | 它只校验格式不校验值，是"假鉴权" | day17 | ⬜ |
+| Q009 | 怎么测出"只验格式不验身份"的接口 | 拿一个无效但格式合法的 token 去请求 | day17 | ⬜ |
+| Q010 | Basic Auth 的 401 是因为密码错吗 | 不是，是类型不匹配（端点要 Bearer） | day17 | ⬜ |
+| Q011 | `pm.response.json()` 在 401 响应上报 JSONError 是为什么 | 失败响应的 body 可能不是 JSON，解析会抛异常 | day17 | ⬜ |
+| Q012 | 断言"响应里不能有 X"该怎么写 | 用 `pm.response.text()` 做子串检查，别用 `json()` | day17 | ⬜ |
+| Q013 | `pm.response.json().data.token` 报 undefined 是为什么 | 这个接口根本不返回 token，字段不存在 | day17 | ⬜ |
+| Q014 | 断言该怎么确定字段路径 | 先看响应 Body 的实际 JSON，再按结构写 | day17 | ⬜ |
+| Q015 | `.not.be.empty` 遇到 undefined 为什么报错 | 要先 `.to.be.a('string')` 再 `.not.empty` | day17 | ⬜ |
+| Q016 | 为什么 401 的响应 body 是空的 | 安全上不泄露失败原因，框架默认只给状态码 | day17 | ⬜ |
+| Q017 | `pm.response.json()` 报 JSONError 怎么排查 | 先看 Response Size 里 Body 是不是 0，再看 Content-Type | day17 | ⬜ |
 
 ## 归档区（连续三次 ✅，不再复习）
 

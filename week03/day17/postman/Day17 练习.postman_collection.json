@@ -1,0 +1,151 @@
+{
+  "info": {
+    "_postman_id": "db45cd0d-349f-4d45-9f60-575990c63b8c",
+    "name": "Day17 练习",
+    "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "60050559",
+    "_collection_link": "https://go.postman.co/collection/60050559-db45cd0d-349f-4d45-9f60-575990c63b8c?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "01-测试 GET 无凭证",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"状态码是 401\", function () {\r\n    pm.response.to.have.status(401);\r\n});\r\npm.test(\"失败响应里不能有 token\", function () {\r\n    const text = pm.response.text();\r\n    pm.expect(text).to.not.include('token');\r\n});\r\n"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/bearer",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "bearer"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "02-测试 GET 带 token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"状态码是 200\", function () {\n    pm.response.to.have.status(200);\n});\npm.test(\"服务器返回了 token\", function () {\n    pm.expect(pm.response.json().token).to.be.a('string').and.not.empty;\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/bearer",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "bearer"
+          ]
+        },
+        "description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
+      },
+      "response": []
+    },
+    {
+      "name": "03-测试 POST",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"状态码是200\", function () {\n    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\n});\npm.test(\"服务器收到的是 POST\", function () {\n    pm.expect(pm.response.json().method).to.eql(\"POST\");\n});\n\npm.test(\"body 被解析成了 json\", function () {\n    const body = pm.response.json();\n    pm.expect(body.json).to.have.property('name');\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/post",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "post"
+          ]
+        },
+        "description": "This is a POST request, submitting data to an API via the request body. This request submits JSON data, and the data is reflected in the response.\n\nA successful POST request typically returns a `200 OK` or `201 Created` response code."
+      },
+      "response": []
+    },
+    {
+      "name": "04-cookies 端点（无 cookie）",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"状态码是 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\npm.test(\"无 cookie 时返回空对象\", function () {\r\n    pm.expect(pm.response.json().cookies).to.eql({});\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/cookies?",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "cookies"
+          ],
+          "query": [
+            {
+              "key": "",
+              "value": ""
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}

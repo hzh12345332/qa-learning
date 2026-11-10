@@ -40,6 +40,11 @@
 | Q015 | `.not.be.empty` 遇到 undefined 为什么报错 | 要先 `.to.be.a('string')` 再 `.not.empty` | day17 | ⬜ |
 | Q016 | 为什么 401 的响应 body 是空的 | 安全上不泄露失败原因，框架默认只给状态码 | day17 | ⬜ |
 | Q017 | `pm.response.json()` 报 JSONError 怎么排查 | 先看 Response Size 里 Body 是不是 0，再看 Content-Type | day17 | ⬜ |
+| Q018 | `jsonSchema` 报错 "should be number" 是什么意思 | 说的是 schema 要求，不是实际类型；实际值要自己看响应体 | day18 §1.2 | 🔁 |
+| Q019 | 怎么让断言报错带上实际值 | 用 `pm.expect(实际值).to.be.a('类型')`，别用 schema | day18 §1.2 | 🔁 |
+| Q020 | URL 栏里写了 GET 会报什么错 | Invalid protocol，因为 Postman 把 "GET " 当成了协议 | day18 | ✅ |
+| Q021 | 脚本加的头为什么在 Headers 标签页看不到 | Headers 是静态配置，Console 才是实际发出的 | day18 | ✅ |
+| Q022 | 怎么验证脚本真的改了请求 | 看 Console 的 Request Headers，或换 /get 让服务器回显 | day18 | 🔁 |
 
 ## 归档区（连续三次 ✅，不再复习）
 

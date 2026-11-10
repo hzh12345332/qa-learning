@@ -19,6 +19,15 @@
               "pm.test(\"状态码是 401\", function () {\r\n    pm.response.to.have.status(401);\r\n});\r\npm.test(\"失败响应里不能有 token\", function () {\r\n    const text = pm.response.text();\r\n    pm.expect(text).to.not.include('token');\r\n});\r\n"
             ]
           }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
         }
       ],
       "request": {
@@ -45,6 +54,15 @@
             "type": "text/javascript",
             "exec": [
               "pm.test(\"状态码是 200\", function () {\n    pm.response.to.have.status(200);\n});\npm.test(\"服务器返回了 token\", function () {\n    pm.expect(pm.response.json().token).to.be.a('string').and.not.empty;\n});"
+            ]
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
             ]
           }
         }
@@ -83,7 +101,16 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test(\"状态码是200\", function () {\n    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\n});\npm.test(\"服务器收到的是 POST\", function () {\n    pm.expect(pm.response.json().method).to.eql(\"POST\");\n});\n\npm.test(\"body 被解析成了 json\", function () {\n    const body = pm.response.json();\n    pm.expect(body.json).to.have.property('name');\n});"
+              "pm.test(\"状态码是200\", function () {\n    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\n});\npm.test(\"服务器收到的是 POST\", function () {\n    pm.expect(pm.response.json().method).to.eql(\"POST\");\n});\nconst schema = {\n    type: \"object\",\n    required: [\"method\", \"json\", \"headers\"],\n    properties: {\n        method:  { type: \"string\" },\n        json:    { type: \"object\" },\n        headers: { type: \"object\" },\n        url:     { type: \"string\" }\n    }\n};\n\npm.test(\"响应结构符合 schema\", function () {\n    pm.response.to.have.jsonSchema(schema);\n});"
+            ]
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
             ]
           }
         }
@@ -124,6 +151,15 @@
               "pm.test(\"状态码是 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\npm.test(\"无 cookie 时返回空对象\", function () {\r\n    pm.expect(pm.response.json().cookies).to.eql({});\r\n});"
             ]
           }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
         }
       ],
       "request": {
@@ -146,6 +182,148 @@
         }
       },
       "response": []
+    },
+    {
+      "name": "05-拿 uuid",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const body = pm.response.json();\r\n\r\n// 存进集合变量\r\npm.collectionVariables.set(\"uid\", body.uuid);\r\n\r\npm.test(\"uuid 已存入变量\", function () {\r\n    pm.expect(pm.collectionVariables.get(\"uid\")).to.be.a(\"string\").and.not.empty;\r\n});"
+            ]
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/uuid",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "uuid"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "06-用 uuid",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"服务器收到了这个 uuid\", function () {\r\n    pm.expect(pm.response.json().args.uid)\r\n      .to.eql(pm.collectionVariables.get(\"uid\"));\r\n});"
+            ]
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              ""
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/get?uid={{uid}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "get"
+          ],
+          "query": [
+            {
+              "key": "uid",
+              "value": "{{uid}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "07-动态变量格式校验",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const args = pm.response.json().args;\r\n\r\npm.test(\"uuid 是合法格式\", function () {\r\n    pm.expect(args.u).to.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/);\r\n});\r\n\r\npm.test(\"timestamp 是正整数\", function () {\r\n    pm.expect(Number(args.t)).to.be.above(0);\r\n});\r\n\r\npm.test(\"n 在 0-1000 之间\", function () {\r\n    pm.expect(Number(args.n)).to.be.within(0, 1000);\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/get?u={{$guid}}&t={{$timestamp}}&n={{$randomInt}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "get"
+          ],
+          "query": [
+            {
+              "key": "u",
+              "value": "{{$guid}}"
+            },
+            {
+              "key": "t",
+              "value": "{{$timestamp}}"
+            },
+            {
+              "key": "n",
+              "value": "{{$randomInt}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "exec": [
+          "pm.request.headers.add({\r",
+          "    key: \"X-Request-Id\",\r",
+          "    value: pm.variables.replaceIn(\"{{$guid}}\")\r",
+          "});"
+        ],
+        "type": "text/javascript"
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "uid",
+      "value": ""
     }
   ]
 }

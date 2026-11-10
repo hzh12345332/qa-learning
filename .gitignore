@@ -9,6 +9,9 @@
 *.csv
 *.xlsx
 
+# ---- 例外：数据驱动测试的输入数据是资产，要进仓库 ----
+!week03/*/data/*.csv
+
 # ---- 系统生成的文件 ----
 Thumbs.db
 desktop.ini

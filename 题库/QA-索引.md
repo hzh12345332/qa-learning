@@ -45,6 +45,8 @@
 | Q020 | URL 栏里写了 GET 会报什么错 | Invalid protocol，因为 Postman 把 "GET " 当成了协议 | day18 | ✅ |
 | Q021 | 脚本加的头为什么在 Headers 标签页看不到 | Headers 是静态配置，Console 才是实际发出的 | day18 | ✅ |
 | Q022 | 怎么验证脚本真的改了请求 | 看 Console 的 Request Headers，或换 /get 让服务器回显 | day18 | 🔁 |
+| Q023 | pip install 报 "No matching distribution (from versions: none)" 怎么排查 | 先确认 pip 与 python 是否同一环境（改用 python -m pip），再换镜像源 | day19 | 🔁 |
+| Q024 | 题 A（SQL）为什么错 | 先定主表再贴表，聚合里不能塞子查询，分组要带主键 | day19 §九 | 🔁 |
 
 ## 归档区（连续三次 ✅，不再复习）
 

@@ -47,6 +47,9 @@
 | Q022 | 怎么验证脚本真的改了请求 | 看 Console 的 Request Headers，或换 /get 让服务器回显 | day18 | 🔁 |
 | Q023 | pip install 报 "No matching distribution (from versions: none)" 怎么排查 | 先确认 pip 与 python 是否同一环境（改用 python -m pip），再换镜像源 | day19 | 🔁 |
 | Q024 | 题 A（SQL）为什么错 | 先定主表再贴表，聚合里不能塞子查询，分组要带主键 | day19 §九 | 🔁 |
+| Q025 | 为什么装了根证书就能改 HTTPS 流量？ | 因为证书校验的信任链终点是“人手动信任的根”，装上就等于授权了一个中间人。 | day20 | 🔁 |
+| Q026 | Android 7 以后 App 为什么抓不到包 | App 只信系统证书，用户装的 CA 不在信任链里 | day20 | 🔁 |
+| Q027 | 抓包只看到 Tunnel 说明什么 | 只转发未解密，证书或解密开关没生效 | day20 §3.3 | 🔁 |
 
 ## 归档区（连续三次 ✅，不再复习）
 

@@ -103,6 +103,8 @@ git status -sb
 
 > 手动更新，别让它过期。
 
-- 最后更新：**2026-11-05**
-- 当前：Day 14 环境文档 + 第 2 周复盘 ✅
-- 下一项：**11/06** HTTP 基础（进入 `week03/`）
+- 最后更新：**2026-11-12**
+- 当前：Day 20 抓包（DevTools + Fiddler）✅ —— `week03/day20/`
+- 下一项：**11/13** 产出完整集合（**M1 验收**）
+  - 先把 `week03/day17/postman/Day17 练习.postman_collection.json` 挪到 `week03/postman/`，去掉 "Day17"
+  - 今天导入的 `Github API` 那条并进去，当"真实业务"素材

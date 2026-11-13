@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "db45cd0d-349f-4d45-9f60-575990c63b8c",
-    "name": "Day17 练习",
+    "name": "HTTPBin 接口测试集合",
     "description": "### Welcome to Postman! This is your first collection. \n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests\n• Test your API in real-world scenarios\n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "60050559",
@@ -101,16 +101,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test(\"状态码是200\", function () {\n    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\n});\npm.test(\"服务器收到的是 POST\", function () {\n    pm.expect(pm.response.json().method).to.eql(\"POST\");\n});\nconst schema = {\n    type: \"object\",\n    required: [\"method\", \"json\", \"headers\"],\n    properties: {\n        method:  { type: \"string\" },\n        json:    { type: \"object\" },\n        headers: { type: \"object\" },\n        url:     { type: \"string\" }\n    }\n};\n\npm.test(\"响应结构符合 schema\", function () {\n    pm.response.to.have.jsonSchema(schema);\n});"
-            ]
-          }
-        },
-        {
-          "listen": "prerequest",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              ""
+              "pm.test(\"状态码是200\", function () {\n    pm.expect(pm.response.code).to.be.oneOf([200, 201]);\n});\npm.test(\"服务器收到的是 POST\", function () {\n    pm.expect(pm.response.json().method).to.eql(\"POST\");\n});\nconst schema = {\n    type: \"object\",\n    required: [\"method\", \"json\", \"headers\"],\n    properties: {\n        method:  { type: \"string\" },\n        json:    { type: \"object\" },\n        headers: { type: \"object\" },\n        url:     { type: \"string\" }\n    }\n};\n\npm.test(\"响应结构符合 schema\", function () {\n    pm.response.to.have.jsonSchema(schema);\n});\npm.test(\"回显的 name 和我发的一致\", function () {\n    pm.expect(pm.response.json().json.name).to.eql(\"张三\");\n});\n\npm.test(\"回显的 tags 是数组且长度为 2\", function () {\n    pm.expect(pm.response.json().json.tags).to.be.an(\"array\").and.have.lengthOf(2);\n});"
             ]
           }
         }
@@ -120,7 +111,7 @@
         "header": [],
         "body": {
           "mode": "raw",
-          "raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+          "raw": "{\n\"name\": \"张三\",\n  \"age\": 18,\n  \"tags\": [\"qa\", \"api\"]\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -184,6 +175,45 @@
       "response": []
     },
     {
+      "name": "04b-cookies端点（有cookie）",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"服务端收到了这个 cookie\", function () {\r\n    pm.expect(pm.response.json().cookies.session).to.eql(\"abc123\");\r\n});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Cookie",
+            "value": "session=abc123"
+          }
+        ],
+        "url": {
+          "raw": "{{baseUrl}}/cookies?session=abc123",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "cookies"
+          ],
+          "query": [
+            {
+              "key": "session",
+              "value": "abc123"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "05-拿 uuid",
       "event": [
         {
@@ -191,16 +221,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "const body = pm.response.json();\r\n\r\n// 存进集合变量\r\npm.collectionVariables.set(\"uid\", body.uuid);\r\n\r\npm.test(\"uuid 已存入变量\", function () {\r\n    pm.expect(pm.collectionVariables.get(\"uid\")).to.be.a(\"string\").and.not.empty;\r\n});"
-            ]
-          }
-        },
-        {
-          "listen": "prerequest",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              ""
+              "const body = pm.response.json();\r\n\r\n// 存进集合变量\r\npm.collectionVariables.set(\"uid\", body.uuid);\r\n\r\npm.test(\"uuid 已存入变量\", function () {\r\n    pm.expect(pm.collectionVariables.get(\"uid\")).to.be.a(\"string\").and.not.empty;\r\n});\r\npm.test(\"状态码是 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});"
             ]
           }
         }
@@ -228,7 +249,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test(\"服务器收到了这个 uuid\", function () {\r\n    pm.expect(pm.response.json().args.uid)\r\n      .to.eql(pm.collectionVariables.get(\"uid\"));\r\n});"
+              "pm.test(\"服务器收到了这个 uuid\", function () {\r\n    pm.expect(pm.response.json().args.uid)\r\n      .to.eql(pm.collectionVariables.get(\"uid\"));\r\n});\r\npm.test(\"状态码是 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});"
             ]
           }
         },
@@ -237,7 +258,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              ""
+              "if (!pm.collectionVariables.get(\"uid\")) {\r\n    console.warn(\"uid 为空：06 必须在 05 之后跑\");\r\n}\r\n"
             ]
           }
         }
@@ -313,7 +334,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test(\"服务端错误返回 500\", function () {\r\n    pm.response.to.have.status(500);\r\n});"
+              "pm.test(\"服务端错误返回 500\", function () {\r\n    pm.response.to.have.status(500);\r\n});\r\npm.test(\"错误响应没有 body\", function () {\r\n    pm.expect(pm.response.text()).to.be.empty;\r\n});"
             ]
           }
         }
@@ -322,11 +343,9 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "https://httpbin.org/status/500",
-          "protocol": "https",
+          "raw": "{{baseUrl}}/status/500",
           "host": [
-            "httpbin",
-            "org"
+            "{{baseUrl}}"
           ],
           "path": [
             "status",
@@ -344,7 +363,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test(\"资源不存在返回 404\", function () {\r\n    pm.response.to.have.status(404);\r\n});"
+              "pm.test(\"资源不存在返回 404\", function () {\r\n    pm.response.to.have.status(404);\r\n});\r\npm.test(\"错误响应没有 body\", function () {\r\n    pm.expect(pm.response.text()).to.be.empty;\r\n});"
             ]
           }
         }
@@ -353,11 +372,9 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "https://httpbin.org/status/404",
-          "protocol": "https",
+          "raw": "{{baseUrl}}/status/404",
           "host": [
-            "httpbin",
-            "org"
+            "{{baseUrl}}"
           ],
           "path": [
             "status",
@@ -375,7 +392,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test(\"延迟接口最终返回 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});"
+              "pm.test(\"延迟接口最终返回 200\", function () {\r\n    pm.response.to.have.status(200);\r\n});\r\npm.test(\"响应是 JSON\", function () {\r\n    pm.response.to.be.json;\r\n});"
             ]
           }
         }
@@ -384,11 +401,9 @@
         "method": "GET",
         "header": [],
         "url": {
-          "raw": "https://httpbin.org/delay/3",
-          "protocol": "https",
+          "raw": "{{baseUrl}}/delay/3",
           "host": [
-            "httpbin",
-            "org"
+            "{{baseUrl}}"
           ],
           "path": [
             "delay",
@@ -417,6 +432,14 @@
     {
       "key": "uid",
       "value": ""
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://httpbin.org"
+    },
+    {
+      "key": "token",
+      "value": "test-token-123"
     }
   ]
 }

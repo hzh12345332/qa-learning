@@ -10,7 +10,13 @@
 *.xlsx
 
 # ---- 例外：数据驱动测试的输入数据是资产，要进仓库 ----
-!week03/*/data/*.csv
+# 用 ** 通配，以后 week05/06 不用再改
+!week*/**/data/*.csv
+
+# ---- 运行产物：每次跑都会变，不进仓库 ----
+week*/**/data/report.json
+week*/**/data/out.json
+week*/**/data/demo.txt
 
 # ---- 系统生成的文件 ----
 Thumbs.db

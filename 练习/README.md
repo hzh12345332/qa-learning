@@ -78,7 +78,36 @@ echo "OK: ${usage}%"
 
 **题面**：在 `qa_practice` 库里查
 
-> 查出**下单次数 ≥ 2** 的用户的 `id`、`name`、订单数，按订单数降序。
+> 查出**下单次数 ≥ 2** 的用户的 `id`、`username`、订单数，按订单数降序。
+
+**表结构**（`qa_practice` 库，Day 12 建过）：
+
+| 表 | 字段 |
+|---|---|
+| `users` | `id`、`username`（以 `DESC users` 为准） |
+| `orders` | `id`、`user_id`（→ users.id）、`total_amount`、`status`、`created_at` |
+
+**不记得字段名就先查**：
+
+```sql
+USE qa_practice;
+SHOW TABLES;
+DESC users;
+DESC orders;
+```
+
+**两步验证法**（比“写完看结果”可靠）：
+
+```sql
+-- ① 先看分布，不筛选
+SELECT user_id, COUNT(*) AS cnt
+FROM orders
+GROUP BY user_id
+ORDER BY cnt DESC;
+
+-- ② 数出“有几个 user_id 的 cnt >= 2” → 这就是期望条数
+-- ③ 再写筛选版，对一下条数
+```
 
 **考点**：`JOIN` + `GROUP BY` + `HAVING` + `ORDER BY`
 

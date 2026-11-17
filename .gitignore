@@ -14,9 +14,14 @@
 !week*/**/data/*.csv
 
 # ---- 运行产物：每次跑都会变，不进仓库 ----
-week*/**/data/report.json
+# report*.json 同时覆盖 report.json / report-v2.json 等
+week*/**/data/report*.json
 week*/**/data/out.json
 week*/**/data/demo.txt
+
+# ---- Python 缓存（自动生成，永远不进仓库）----
+__pycache__/
+*.py[cod]
 
 # ---- 系统生成的文件 ----
 Thumbs.db

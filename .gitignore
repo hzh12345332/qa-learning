@@ -19,6 +19,9 @@ week*/**/data/report*.json
 week*/**/data/out.json
 week*/**/data/demo.txt
 
+# ---- 练习用的假数据（随时用命令重新生成，不进仓库）----
+练习/**/access.log
+
 # ---- Python 缓存（自动生成，永远不进仓库）----
 __pycache__/
 *.py[cod]

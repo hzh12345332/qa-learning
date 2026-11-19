@@ -33,7 +33,7 @@
 |---|---|---|---|---|
 | 11/16 | Shell | 磁盘空间告警 | 🔁 | |
 | 11/17 | SQL | 订单数 ≥ 2 的用户 | ✅ | |
-| 11/18 | 断言 | 给 `08-模拟 500` 补三层断言 | ⬜（11/19 补） | |
+| 11/18 | 断言 | 给 `08-模拟 500` 补三层断言 | ✅ | `.include()` 多参数被静默忽略 → 改用 `filter` 一次报全 |
 | 11/19 | Shell | 日志状态码统计 | ⬜ | |
 | 11/20 | SQL | 查出"有订单无明细"的脏数据 | ⬜ | |
 | 11/21 | 断言 | 同一条断言，三种写法 | ⬜ | |
@@ -161,11 +161,41 @@ pm.test("错误响应没有 body", function () {
 
 pm.test("5xx 不泄露堆栈或内网路径", function () {
     const t = pm.response.text().toLowerCase();
-    ["traceback", "sql", "/home/", "password"].forEach(function (kw) {
-        pm.expect(t, "泄露了 " + kw).to.not.include(kw);
+    const hits = ["traceback", "sql", "/home/", "password"].filter(function (kw) {
+        return t.includes(kw);
     });
+    pm.expect(hits, "泄露了：" + hits.join("、")).to.be.empty;
+});
+
+// 自测：证明 L3 真能识别全部 4 个词（可以长期留着）
+pm.test("自测：L3 能识别全部 4 个关键词", function () {
+    const fake = [
+        "Traceback (most recent call last):",
+        "  File \"/home/app/main.py\", line 42",
+        "sql = \"SELECT * FROM users WHERE password = 'x'\""
+    ].join("\n");
+    const hits = ["traceback", "sql", "/home/", "password"].filter(function (kw) {
+        return fake.toLowerCase().includes(kw);
+    });
+    pm.expect(hits.length, "只抓到：" + hits.join("、")).to.equal(4);
 });
 ```
+
+**实际完成（2026-11-19 早上补）**：**4/4 通过**
+
+**踩到的三个坑（都值得记）**：
+
+| 坑 | 表现 | 正确做法 |
+|---|---|---|
+| `.include()` 只吃**一个**参数 | `.include("traceback", "sql", ...)` 不报错，但**只查第一个** | 用 `forEach` / `filter` 逐个查 |
+| 一条 `pm.test` 里循环，**命中即中断** | 只报"泄露了 traceback"，后面 3 个不检查 → **漏报** | 先 `filter` 收集，最后一次断言列出全部 |
+| 自测的 fake 字符串**不全** | `SELECT * FROM users` 里没有 `sql`、也没有 `password` → 只命中 2 个 | fake 要故意包含全部关键词，否则自测在骗自己 |
+
+**三条关键认识**：
+
+1. `.include()` 多传参数被**静默忽略** —— 和 Python 里 `def wrapper(row, retry=1)` 吞掉调用方的 `retry=5` 是同一类病
+2. **`pm.test` 内部有 try/catch**，所以把 `pm.test` 放进循环里可以 4 条独立报告；但写在**同一条** `pm.test` 里循环，命中第一个就中断
+3. **一条永远通过的断言等于没有断言** —— 关键断言要用"必然违规"的输入喂一次，确认它会红
 
 ---
 

@@ -53,16 +53,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
-              "pm.test(\"状态码是 200\", function () {\n    pm.response.to.have.status(200);\n});\npm.test(\"服务器返回了 token\", function () {\n    pm.expect(pm.response.json().token).to.be.a('string').and.not.empty;\n});"
-            ]
-          }
-        },
-        {
-          "listen": "prerequest",
-          "script": {
-            "type": "text/javascript",
-            "exec": [
-              ""
+              "pm.test(\"状态码是 200\", function () {\n    pm.response.to.have.status(200);\n});\npm.test(\"服务器返回了 token\", function () {\n    pm.expect(pm.response.json().token).to.be.a('string').and.not.empty;\n});\npm.test(\"① expect：authenticated 为 true\", function () {\n    const body = pm.response.json();\n    pm.expect(body.authenticated).to.eql(true);\n});\npm.test(\"② jsonBody：字段值匹配\", function () {\n    pm.response.to.have.jsonBody(\"authenticated\", true);\n});\npm.test(\"③ schema：结构符合\", function(){\n    pm.response.to.have.jsonSchema({\n        type: \"object\",\n        required: [\"authenticated\", \"token\"],\n        properties: { \n            authenticated: { type: \"boolean\" },\n            token: { type: \"string\" } \n        }\n    });\n});\n\n"
             ]
           }
         }

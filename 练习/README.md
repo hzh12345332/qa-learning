@@ -36,7 +36,7 @@
 | 11/18 | 断言 | 给 `08-模拟 500` 补三层断言 | ✅ | `.include()` 多参数被静默忽略 → 改用 `filter` 一次报全 |
 | 11/19 | Shell | 日志状态码统计 | ✅ | 列号依赖日志格式：短日期格式状态码在 `$8`，不是 `$9` |
 | 11/20 | SQL | 查出"有订单无明细"的脏数据 | ✅ | `INNER JOIN` 会丢掉孤儿行；必须 `LEFT JOIN` 补 `NULL` 才能被 `WHERE ... IS NULL` 捉到 |
-| 11/21 | 断言 | 同一条断言，三种写法 | ⬜ | |
+| 11/21 | 断言 | 同一条断言，三种写法 | ✅ | `jsonSchema` 只写了一个字段（漏掉的不校验）；缺逗号 → 脚本根本没执行 |
 
 > 状态：⬜ 未做 / 🔁 做过但卡 / ✅ 写完且能跑
 
@@ -304,6 +304,101 @@ pm.test("③ schema：结构符合", function () {
     });
 });
 ```
+
+**怎么判断该写 `true` 还是 `"true"`**：
+
+```js
+const body = pm.response.json();
+console.log(typeof body.authenticated, body.authenticated);
+// "boolean" true   → 写 true
+// "string"  true   → 写 "true"
+```
+
+| 响应体里长什么样 | 解析后类型 | 断言怎么写 |
+|---|---|---|
+| `"authenticated": true` | `boolean` | `to.eql(true)` |
+| `"authenticated": "true"` | `string` | `to.eql("true")` |
+
+> `console.log` 打印时两者**都显示 `true`**，只有 `typeof` 分得清 —— 所以别靠肉眼看。
+> Chai 的 `eql` 是严格深比较，类型不对一定失败（`"true" == true` 在 JS 里也是 `false`）。
+
+**`jsonSchema` 里三个关键字各管什么**：
+
+| 关键字 | 回答什么问题 | 类比 |
+|---|---|---|
+| `"type"` | 这个值是什么类型（`object`/`array`/`string`/`number`/`boolean`/`null`） | "这一格必须是数字" |
+| `"properties"` | 每个字段**如果出现**，要长什么样 | "填了的话按这个格式填" |
+| `"required"` | 哪些字段**必须存在** | "这几格是必填项" |
+
+**最容易混的一条**：
+
+> **`properties` 不等于"必须有"** —— 它只规定"有的话要符合"。
+> **"必须有"要靠 `required`。**
+
+实测（schema 为 `{"type":"object","properties":{"authenticated":{"type":"boolean"}}}`）：
+
+| 响应 | 只有 properties | 加了 required |
+|---|---|---|
+| `{"authenticated": true}` | ✅ | ✅ |
+| `{"authenticated": "true"}` | ❌ 类型错 | ❌ 类型错 |
+| `{}` | ✅ **通过** | ❌ **缺必填** |
+| `{"authenticated": true, "extra": 1}` | ✅（默认允许多字段） | ✅ |
+
+> 想让"多余字段"也报错，要加 `"additionalProperties": false`。
+
+**一条 schema 能同时管几个字段**：
+
+```js
+pm.response.to.have.jsonSchema({
+    type: "object",
+    required: ["authenticated", "token"],          // ← 几个字段都列上
+    properties: {
+        authenticated: { type: "boolean" },
+        token: { type: "string" }
+    }
+});
+```
+
+**"谁是谁"由 `properties` 的 key 决定** —— key 就是字段名，value 是这个字段的规则，所以天然不会串。嵌套对象同样套：
+
+```js
+properties: {
+    user: {
+        type: "object",
+        required: ["id"],
+        properties: { id: { type: "number" } }
+    }
+}
+```
+
+> **schema 只校验你写进去的字段**：`required` 里漏了 `authenticated`，
+> 它变成字符串 `"true"` 也不会报警 —— 没写的字段等于没检查。
+
+**schema 和 `pm.expect` 的分工**：
+
+| 写法 | 管什么 |
+|---|---|
+| `have.jsonSchema` | **形状对不对**（字段在不在、类型对不对） |
+| `pm.expect` | **值对不对**（`authenticated` 是不是 `true`、`token` 是不是空串） |
+
+两个都要：schema 保证不了"值是 `true`"（`false` 也是合法布尔），
+`expect` 保证不了"字段没少"。常见组合是 **schema 管结构 + 关键字段单独 `expect`**。
+
+**常见语法错：缺逗号**
+
+```js
+properties: {
+    authenticated: { type: "boolean" }      // ← 少了这个逗号
+    token: { type: "string" }
+}
+```
+
+报错：`SyntaxError: Unexpected identifier 'token'`。
+
+> **报错指着 `token` 那一行，问题在它上一行末尾。**
+> 判据：看到 `Unexpected identifier X` / `Unexpected token X`，先看 `X` 的**上一行末尾**。
+> 另外这类错属于"**脚本根本没执行**"（Postman 顶部显示 `Couldn't evaluate the test script`），
+> **不是断言失败** —— 别去查断言逻辑，先查语法。
 
 ---
 

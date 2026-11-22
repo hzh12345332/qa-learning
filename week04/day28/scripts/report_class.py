@@ -74,7 +74,7 @@ class ReportRunner:
     def summary(self):
         passed = sum(1 for r in self.results if r["pass"])
         failed = len(self.results) - passed
-        return "共 %d 条 | 通过 %d | 失败 %d" % (len(self.results), passed, len(self.results) - passed)
+        return "共 %d 条 | 通过 %d | 失败 %d" % (len(self.results), passed, failed)
 
     def run(self):
         self.run_all()

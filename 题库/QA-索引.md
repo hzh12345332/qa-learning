@@ -72,6 +72,9 @@
 | Q047 | `with` 背后的两个方法 | `__enter__` 进入返回资源，`__exit__` 退出（正常/异常都调） | day28 | 🔁 |
 | Q048 | `@contextmanager` 怎么实现的 | 用生成器：yield 之前是 enter，之后是 exit，要 try/finally | day28 | 🔁 |
 | Q049 | 为什么用 logging 不用 print | 能分级、能按级别关、能同时写文件、自带时间和来源 | day28 | 🔁 |
+| Q050 | pytest 怎么知道哪些函数是测试 | 文件 `test_*.py` 或 `*_test.py`；函数以 `test` 开头（惯例 `test_`）；类 `Test` 开头且没有 `__init__` | day29 | 🔁 |
+| Q051 | pytest 的 assert 为什么比 unittest 的 assertXxx 好用 | 一个裸 assert 通吃所有比较，不用记 30 个方法名；断言重写让失败时打印中间值 | day29 | 🔁 |
+| Q052 | pytest 退出码 5 是什么意思，为什么不能当成功 | 没收集到任何用例；测试根本没跑，比失败更该报错 | day29 | 🔁 |
 
 ## 归档区（连续三次 ✅，不再复习）
 

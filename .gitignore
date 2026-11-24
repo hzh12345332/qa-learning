@@ -31,3 +31,4 @@ Thumbs.db
 desktop.ini
 *.log
 .pytest_cache/
+week*/**/data/tmp_*.txt

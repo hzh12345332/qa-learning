@@ -40,7 +40,7 @@ cachedir: .pytest_cache
 rootdir: D:\work\qa-learning
 collected 1 item
 
-week04/day29/scripts/test_01_first.py::test_add FAILED                                       [100%]
+week05/day29/scripts/test_01_first.py::test_add FAILED                                       [100%]
 
 ============================================ FAILURES =============================================
 ____________________________________________ test_add _____________________________________________
@@ -51,7 +51,7 @@ E       assert (1 + 1) == 3
 
 week04\day29\scripts\test_01_first.py:2: AssertionError
 ===================================== short test summary info =====================================
-FAILED week04/day29/scripts/test_01_first.py::test_add - assert (1 + 1) == 3
+FAILED week05/day29/scripts/test_01_first.py::test_add - assert (1 + 1) == 3
 ======================================== 1 failed in 0.24s ========================================
 ```
 
@@ -143,12 +143,12 @@ FAILED week04/day29/scripts/test_01_first.py::test_add - assert (1 + 1) == 3
 **输出：**
 
 ```text
-week04/day29/scripts/my_test.py::test_b
-week04/day29/scripts/test_03_ok.py::test_a
-week04/day29/scripts/test_report.py::test_user_1_ok
-week04/day29/scripts/test_report.py::test_user_2_ok
-week04/day29/scripts/test_report.py::test_status_404_returns_404
-week04/day29/scripts/test_report.py::test_user_999_ok
+week05/day29/scripts/my_test.py::test_b
+week05/day29/scripts/test_03_ok.py::test_a
+week05/day29/scripts/test_report.py::test_user_1_ok
+week05/day29/scripts/test_report.py::test_user_2_ok
+week05/day29/scripts/test_report.py::test_status_404_returns_404
+week05/day29/scripts/test_report.py::test_user_999_ok
 
 6 tests collected in 0.34s
 ```
@@ -230,7 +230,7 @@ E        +  where 404 = <Response [404]>.status_code
 
 week04\day29\scripts\test_report.py:25: AssertionError
 ============================================================================================ short test summary info ============================================================================================
-FAILED week04/day29/scripts/test_report.py::test_status_404_returns_404 - assert 404 == 200
+FAILED week05/day29/scripts/test_report.py::test_status_404_returns_404 - assert 404 == 200
 
 ```
 
@@ -250,8 +250,8 @@ FAILED week04/day29/scripts/test_report.py::test_status_404_returns_404 - assert
 python -m pytest
 
 # ② 只跑某个文件 / 某个函数
-python -m pytest week04/day29/scripts/test_report.py
-python -m pytest week04/day29/scripts/test_report.py::test_user_1_ok
+python -m pytest week05/day29/scripts/test_report.py
+python -m pytest week05/day29/scripts/test_report.py::test_user_1_ok
 
 # ③ 详细模式：每条用例一行结果
 python -m pytest -v
@@ -269,7 +269,7 @@ python -m pytest -x
 - 文件::函数 这个写法（:: 双冒号）定位一条用例时最快：
 
 ```bash
-python -m pytest week04/day29/scripts/test_report.py::test_user_1_ok -v
+python -m pytest week05/day29/scripts/test_report.py::test_user_1_ok -v
 ```
 
 ### 5.2 退出码 0 / 1 / 5 分别什么意思，和 Day28 我自定的 0/1/2 怎么对应

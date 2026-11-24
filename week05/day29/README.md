@@ -20,7 +20,7 @@
 
 ```bash
 cd /d/work/qa-learning
-python -m pytest week04/day29/scripts -q
+python -m pytest week05/day29/scripts -q
 # 6 passed in 8.33s        退出码 0
 ```
 
@@ -44,7 +44,7 @@ python -m pytest week04/day29/scripts -q
 
 ## 备注（今天的坑）
 
-- **B0 第 ① 空只写到目录** `week04/day29/data`（漏 `report_b0.json`）→ `open()` 报 `PermissionError`
+- **B0 第 ① 空只写到目录** `week05/day29/data`（漏 `report_b0.json`）→ `open()` 报 `PermissionError`
   （Windows 把“把目录当文件写”报成权限问题；Linux 上是 `IsADirectoryError`）
 - **笔记里退出码写成 127** —— 其实是 shell 的 `command not found`，pytest 断言失败是 **1**
 - **加练 shell 脚本第一版全是语法错**：`LOG = /tmp/pytest.out`（等号两边有空格）→ bash 把 `LOG` 当命令执行；

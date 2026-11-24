@@ -142,15 +142,15 @@ git status -sb
 
 > 手动更新，别让它过期。
 
-- 最后更新：**2026-11-23**
-- 当前：Day 29 **pytest 入门 ✅** —— `week05/day29/`
-  - 产出：笔记 330 行 + 9 个脚本（含 4 条真用例），`python -m pytest` → **6 passed / 退出码 0**
-  - 补课：B0 填空版 25 分钟、5/6 对（错在 ① 只写到目录）—— 11/22 那笔「第 3 阶没过」的账还了
-  - 核心：`python -m pytest`（不是 `pytest`）；断言重写；发现规则 `test_*.py` / `_test.py`；退出码 **5 = 没收集到用例**
-  - 新增题：Q050–Q052（题库 **52 条**）
-  - 加练：Shell 统计 pytest 结果（PASSED/FAILED + 有失败 `exit 1`）—— ✅ 两分支都验过
-  - 当天最大的坑：shell 里 `LOG = ...` 等号两边加空格 → 被当成执行命令 `LOG`；而且 `LOG` 撞了环境变量
-- 下一项：**11/24 周二** Day 30 —— `fixture`（作用域 + `yield` 版清理），把今天的 `get()` 收成 fixture
+- 最后更新：**2026-11-24**
+- 当前：Day 30 **fixture ✅** —— `week05/day30/`
+  - 产出：笔记 412 行 + 6 个脚本（含 `demo_06_error.py` 两种 ERROR 复现），`python -m pytest` → **10 passed / 退出码 0**
+  - 核心：fixture 是**参数声明式注入**；`yield` 劈成 setup/teardown（用例失败也执行）；作用域 `function`/`module`/`session`（module 边界是文件）；`--setup-show` 看调度
+  - 改造：`test_report.py` 的 `get()` → `cfg` + `client` fixture，`Session` 整轮只建一次
+  - 新增题：Q053–Q055（题库 **55 条**）
+  - 加练：SQL「每人最近一笔订单」—— `ROW_NUMBER() OVER (PARTITION BY ... ORDER BY ...)` + 外层 `WHERE rn = 1`
+  - 当天最大的坑：文件里只写了 fixture 没写用例 → `collected 0 items`（零报错，但一条没跑）
+- 下一项：**11/25 周三** Day 31 —— `conftest.py` 分层 + 配置注入（`cfg` 改成读 `config.json`）+ **30 分钟从零手写**
 
 ### 已交付
 

@@ -78,6 +78,9 @@
 | Q053 | fixture 和普通函数的区别 | 用例写参数名声明需求，pytest 找同名 fixture 先执行再把返回值注入参数，不用显式调用 | day30 | 🔁 |
 | Q054 | yield 版 fixture 的清理何时执行 | 用例结束后；scope 决定时机（module 在模块末、session 在整轮末），多个 fixture 逆序收尾 | day30 | 🔁 |
 | Q055 | 什么情况不能把 fixture 设成 session 作用域 | 有状态或会被用例修改的东西；共享会串味，导致单跑绿、一起跑红 | day30 | 🔁 |
+| Q056 | conftest.py 是干什么的，为什么不用 import | pytest 自动加载的配置/夹具文件，放 fixture；同目录及子目录的测试自动可用，靠目录树加载而不是 import | day31 | 🔁 |
+| Q057 | 多个 conftest.py 的 fixture 谁覆盖谁 | 就近优先（子目录覆盖父目录）；fixture 只向下生效，父目录用不了子目录的 | day31 | 🔁 |
+| Q058 | conftest.py 出错会怎样 | 加载期报 ImportError，退出码 4，整轮一条测试都跑不起来 | day31 | 🔁 |
 
 ## 归档区（连续三次 ✅，不再复习）
 

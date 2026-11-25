@@ -142,15 +142,16 @@ git status -sb
 
 > 手动更新，别让它过期。
 
-- 最后更新：**2026-11-24**
-- 当前：Day 30 **fixture ✅** —— `week05/day30/`
-  - 产出：笔记 412 行 + 6 个脚本（含 `demo_06_error.py` 两种 ERROR 复现），`python -m pytest` → **10 passed / 退出码 0**
-  - 核心：fixture 是**参数声明式注入**；`yield` 劈成 setup/teardown（用例失败也执行）；作用域 `function`/`module`/`session`（module 边界是文件）；`--setup-show` 看调度
-  - 改造：`test_report.py` 的 `get()` → `cfg` + `client` fixture，`Session` 整轮只建一次
-  - 新增题：Q053–Q055（题库 **55 条**）
-  - 加练：SQL「每人最近一笔订单」—— `ROW_NUMBER() OVER (PARTITION BY ... ORDER BY ...)` + 外层 `WHERE rn = 1`
-  - 当天最大的坑：文件里只写了 fixture 没写用例 → `collected 0 items`（零报错，但一条没跑）
-- 下一项：**11/25 周三** Day 31 —— `conftest.py` 分层 + 配置注入（`cfg` 改成读 `config.json`）+ **30 分钟从零手写**
+- 最后更新：**2026-11-25**
+- 当前：Day 31 **conftest 分层 + 配置注入 ✅** —— `week05/day31/`
+  - 产出：笔记 306 行 + 根 `conftest.py` + 6 个演示脚本 + `handwrite/`，`python -m pytest` → **9 passed / 退出码 0**
+  - **30 分钟从零手写：25 分钟 3 passed —— 第 3 阶过** ✅
+  - 核心：`conftest.py` 自动加载不用 import；四条硬规则（往下传 / 不往上传 / 就近覆盖 / 出错退出码 4）；`cfg` 改成读 `config.json`（**改数据不改代码**）
+  - 验证配置注入的正确写法：`assert cfg == on_disk`（不靠临时字段，不污染数据）
+  - 新增题：Q056–Q058（题库 **58 条**）
+  - 加练：五维断言（状态码/类型/字段/值/耗时）—— 顺手抓出 `r.test` 拼错被"断言消息惰性求值"藏住的 bug
+  - 当天最大的坑：把测试函数写进 `conftest.py` → `collected 0 items`（零报错，一条没跑）
+- 下一项：**11/26 周四** Day 32 —— `parametrize` 数据驱动（接 `users.csv`），目标是本周硬指标「**加一个用例只改数据文件，不改代码**」
 
 ### 已交付
 

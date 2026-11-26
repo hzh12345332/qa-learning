@@ -81,6 +81,9 @@
 | Q056 | conftest.py 是干什么的，为什么不用 import | pytest 自动加载的配置/夹具文件，放 fixture；同目录及子目录的测试自动可用，靠目录树加载而不是 import | day31 | 🔁 |
 | Q057 | 多个 conftest.py 的 fixture 谁覆盖谁 | 就近优先（子目录覆盖父目录）；fixture 只向下生效，父目录用不了子目录的 | day31 | 🔁 |
 | Q058 | conftest.py 出错会怎样 | 加载期报 ImportError，退出码 4，整轮一条测试都跑不起来 | day31 | 🔁 |
+| Q059 | parametrize 的三个要素 | 参数名字符串（"a,b"）+ 数据组列表（每组一个元组）+ 函数签名同名收参数 | day32 | 🔁 |
+| Q060 | ids 是干什么的，不写会怎样 | 自定义用例名让失败定位更清楚；不写就自动用参数值拼成 [1-200] | day32 | 🔁 |
+| Q061 | parametrize 传空列表会怎样，为什么危险 | 每条都 SKIPPED（got empty parameter set），不是通过；数据读空时 CI 会误判为绿 | day32 | 🔁 |
 
 ## 归档区（连续三次 ✅，不再复习）
 

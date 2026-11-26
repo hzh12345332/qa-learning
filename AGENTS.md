@@ -93,3 +93,46 @@
 ### 8.3 手册里的示例输出要实测
 
 贴 pytest / shell 的输出前，**先在用户机器上跑一遍**（版本差异会导致示例失真，Day29 踩过 `assert 2 == 3` 的 8.x/9.x 差异）。跑不了就标注「示意，以你的实际输出为准」。
+
+### 8.4 手册骨架与构建流程
+
+**骨架**（Day29 起稳定，`Day32-逐日执行手册.md` 是最新范本，照它抄结构）：
+
+| 节 | 内容 |
+|---|---|
+| 0 | 今天只回答一个问题（先抛痛点，再给"昨天 vs 今天"对比表） |
+| 0.1 | 你在 12 周计划里的位置（表格 + 本周硬指标原文） |
+| 1 | 时间表（B1–B5，合计 **360 min**；写清"只能做两块时选哪两块"） |
+| 2–5 | B1–B4 正文 → 每节结构：**痛点 → 拆解表格 → 实测输出 → 动手清单 → 判据** |
+| 6 | B5：笔记 + 加练 + 提交 |
+| 7 | 笔记模板（**末尾两行见 8.1**） |
+| 8 | 自检清单 10 题（答出 7 题算过） |
+| 9 | 面试对应（问题 → 答题骨架） |
+| 10 | 十个坑（坑 → 后果） |
+| 11 | 当日验收（`- [ ]` 复选框） |
+| 12 | 今日加练（15 分钟，含参考实现 + 判据） |
+| 13 | 明天预告（对照表 + 今晚 3 分钟思考题） |
+| 14 | 今日 3 题（QNNN–QNNN，**附 sync_qa 只认半角 `|` 的提醒**） |
+| 15 | 一句话收尾 |
+
+**构建**（`build_dayNN.py` 从上一份复制，改 SRC/DST + 封面五项）：
+
+```bash
+cd /g/DSH
+cp 工具脚本/build_day32.py 工具脚本/build_day33.py          # 改 SRC/DST 与封面（8.2）
+"C:/Users/86177/.dsh/dsh-runtimes/dsh-primary-runtime/dependencies/python/python.exe" \
+  工具脚本/build_day33.py
+```
+
+产物：`G:\DSH\逐日手册\DayNN-逐日执行手册.md` + `.docx`。
+
+**两个 python 分工，别用错**：
+
+| 用途 | 解释器 |
+|---|---|
+| 生成/读取 `.docx`（装了 python-docx） | `C:\Users\86177\.dsh\dsh-runtimes\dsh-primary-runtime\dependencies\python\python.exe` |
+| 跑 pytest / requests（用户自己的环境） | `D:\Python312\python.exe` |
+
+**WPS 会锁 docx**：重建时报 `PermissionError` 就让用户先关 WPS，再重跑一次。
+
+**体检脚本**：`G:\DSH\review_note.py`（10 项检查），用法见 `G:\DSH\笔记体检-使用说明.md`。

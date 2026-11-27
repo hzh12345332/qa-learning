@@ -142,17 +142,16 @@ git status -sb
 
 > 手动更新，别让它过期。
 
-- 最后更新：**2026-11-26**
-- 当前：Day 32 **parametrize 数据驱动 ✅** —— `week05/day32/`
-  - 产出：笔记 277 行 + 3 个脚本，`python -m pytest week05/day32` → **11 passed / 1 xfailed**
-  - **本周硬指标兑现**：「加一行 `users.csv` → 用例数 +1，不改任何代码」（3 条 → 4 条，实测）
-  - 核心：参数名字符串是**拆包说明**；用例名 = 函数名 + `[参数值]`；函数参数走**两条注入通道**（fixture / parametrize）
-  - 踩坑档案：`day32` 拿不到 `day31` 的 fixture（**兄弟目录不可见**）→ `conftest.py` 上移到 `week05/`
-  - 防御：`load_cases()` 加 `assert rows`，挡住"数据空了 → 全 SKIPPED → 退出码 0 假绿"
-  - 新增题：Q059–Q061（题库 **61 条**）
-  - 加练：Shell 参数组统计（`grep -oE` + `sort|uniq -c` + 总数 0 就 `exit 1`）—— 两分支都验过
-  - 当天最大的坑：`-k "1-200"` 是模糊匹配，顺带命中 `[11-2000]`；精确要写 `-k "[1-200]"`
-- 下一项：**11/27 周五** Day 33 —— 把 `report_class.py` **重写成 pytest 版**（配置/连接/数据三块料已齐）
+- 最后更新：**2026-11-27**
+- 当前：Day 33 **report_class 重写成 pytest 版 ✅** —— `week05/day33/`
+  - 产出：笔记 385 行 + `test_report_pytest.py`（**6 行、零 import**），`python -m pytest week05` → **40 passed / 1 xfailed**
+  - **本周硬指标兑现**：「加一行 `users.csv` → 用例数 +1，不改任何代码」（4 条 → 5 条，实测）
+  - 核心：`pytest_generate_tests` 按**参数名**注入（`row` 换 `case` 就不认）；旧版 `try/except` 三个目的全不成立；「保护范围」vs「隔离机制」
+  - 踩坑档案：`sys.exit()` 后三行死代码待了 5 天没人发现；`| tail` 吃掉退出码；`timeout=10` 让实验跑 87 秒
+  - 防御：`load_cases()` 的 `assert rows`；**`only_in_sub` 一个字没动**（Day31 的 `test_sibling_sub.py` 依赖它）
+  - 新增题：Q062–Q064（题库 **64 条**）
+  - 加练：SQL **未做** → 11/28 早上补
+- 下一项：**11/28 周六** Day 34 —— 框架分层续 + 骨架跑通一条用例（重排表 #20 续）
 
 ### 已交付
 

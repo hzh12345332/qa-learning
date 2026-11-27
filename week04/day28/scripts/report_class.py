@@ -97,9 +97,7 @@ def main():
         os.path.join(dst, "data", "report.json"),
     )
     sys.exit(1 if runner.run() else 0)
-    runner.run_all()
-    runner.write_report()
-    print(runner.summary()) 
+
 
 if __name__ == "__main__":
     main()

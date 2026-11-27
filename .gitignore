@@ -32,3 +32,8 @@ desktop.ini
 *.log
 .pytest_cache/
 week*/**/data/tmp_*.txt
+
+# ---- 测试报告（CI 产物，每次跑都会变，不进仓库）----
+# pytest --junitxml 生成；week06 起统一放 reports/
+report.xml
+reports/

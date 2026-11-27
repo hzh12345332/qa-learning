@@ -84,6 +84,9 @@
 | Q059 | parametrize 的三个要素 | 参数名字符串（"a,b"）+ 数据组列表（每组一个元组）+ 函数签名同名收参数 | day32 | 🔁 |
 | Q060 | ids 是干什么的，不写会怎样 | 自定义用例名让失败定位更清楚；不写就自动用参数值拼成 [1-200] | day32 | 🔁 |
 | Q061 | parametrize 传空列表会怎样，为什么危险 | 每条都 SKIPPED（got empty parameter set），不是通过；数据读空时 CI 会误判为绿 | day32 | 🔁 |
+| Q062 | 为什么 pytest 版不用 try/except 包住每条用例 | 每条用例独立运行，异常不中断其余；吞掉异常会丢 traceback | day33 | 🔁 |
+| Q063 | summary() 和 sys.exit() 各被什么替代了 | 前者被 pytest 结尾行，后者被 pytest 退出码 0/1/5 | day33 | 🔁 |
+| Q064 | 钩子里的 row 是什么作用，换个参数名会怎样 | 注入触发器，测试函数签名必须同名；换个名就是收集期 ERROR fixture not found | day33 | 🔁 |
 
 ## 归档区（连续三次 ✅，不再复习）
 

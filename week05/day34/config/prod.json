@@ -1,0 +1,5 @@
+{
+    "baseUrl": "https://httpbin.org",
+    "timeout": 30,
+    "endpoint": "/anything"
+}

@@ -63,6 +63,10 @@
   删了 Day31 从 **9 passed → 8 passed + 1 error**。
 - **历史数据同理** —— 数据文件里“多出来的那一行”可能是正式用例。
   `users.csv` 的 `3,200` 是 Day32 的第 4 条（**资产**），`4,500` 才是 Day33 的一次性耗材。先分清资产和耗材再动手。
+- **说「已改」之前必须先看到写操作的回执** —— 没有 `saved:` / `completed` / `changed=` 这类回执，就是没改。
+  **禁止用「已修复」「已补充」「已重建」这种完成时**。
+  踩过：Day34 手册声称「已补 markers 说明、docx 已重建」，实际一个命令都没跑，用户以为已经安全了。
+  正确做法：改完贴回执，或者明说「我还没改」。
 
 ## 七、加练体系
 
@@ -141,3 +145,30 @@ cp 工具脚本/build_day32.py 工具脚本/build_day33.py          # 改 SRC/DS
 **WPS 会锁 docx**：重建时报 `PermissionError` 就让用户先关 WPS，再重跑一次。
 
 **体检脚本**：`G:\DSH\review_note.py`（10 项检查），用法见 `G:\DSH\笔记体检-使用说明.md`。
+
+### 8.5 docx 重建的标准流程（WPS 会锁文件）
+
+**问题**：用户开着 WPS 时 `doc.save()` 报 `PermissionError`；AI 感知不到用户什么时候打开文件。
+
+1. 改完 `.md`，**先试锁**（比查进程可靠 —— 实测 2026-11-28：`tasklist` 查 `wps` 返回 0，
+   但文件确实被占用，构建仍 `PermissionError`）：
+
+   ```bash
+   powershell -NoProfile -Command "try { $f=[System.IO.File]::Open('完整路径.docx','Open','ReadWrite','None'); $f.Close(); '没被锁' } catch { '被占用' }"
+   ```
+
+2. **被占用 / 进程在跑 → 不要直接构建**，先弹窗问用户（`ask_user_question`）：
+   - 「WPS 正开着 DayNN 手册，关掉后我再重建」
+   - 选项：「已关闭，开始重建」/「先不改」
+3. 用户确认后再跑 `build_dayNN.py`，**看到 `saved:` 才算成功**（见 §六 回执规则）
+4. 成功后提醒用户「WPS 里关掉重开才是新版」
+
+**打开文件：做不到（实测 2026-11-28）**
+
+| 试法 | 结果 |
+|---|---|
+| `Start-Process wps.exe "xxx.docx"` | **能拉起**（用户看到窗口弹出），但 `ops_bash` 一结束就**整棵进程树被杀**，WPS 三两秒后自己消失 |
+| `Start-Process "xxx.docx"`（走关联） | 静默无反应 —— `.docx` 关联的是 `Word.Document.12`，机器只装了 WPS |
+| `explorer.exe "xxx.docx"` | 退出码 `0xC0000142`（DLL 初始化失败），沙箱里起不来 |
+
+**结论：让用户自己双击。** AI 只负责说清「改了哪个文件、完整路径是什么」。

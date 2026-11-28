@@ -87,6 +87,9 @@
 | Q062 | 为什么 pytest 版不用 try/except 包住每条用例 | 每条用例独立运行，异常不中断其余；吞掉异常会丢 traceback | day33 | 🔁 |
 | Q063 | summary() 和 sys.exit() 各被什么替代了 | 前者被 pytest 结尾行，后者被 pytest 退出码 0/1/5 | day33 | 🔁 |
 | Q064 | 钩子里的 row 是什么作用，换个参数名会怎样 | 注入触发器，测试函数签名必须同名；换个名就是收集期 ERROR fixture not found | day33 | 🔁 |
+| Q065 | pytest.ini 里 addopts / testpaths / pythonpath 各解决什么问题 | 默认参数 / 默认路径 / 模块搜索路径 | day34 | 🔁 |
+| Q066 | --env 从命令行传到 fixture 要几步 | addoption 注册 → config.getoption 读 → fixture 拼配置文件名 | day34 | 🔁 |
+| Q067 | 失败快照怎么实现的，两个钩子各管什么 | Session.hooks.response 记请求 + pytest_runtest_makereport 失败时塞进 rep.sections | day34 | 🔁 |
 
 ## 归档区（连续三次 ✅，不再复习）
 
